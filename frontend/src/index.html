@@ -3,54 +3,79 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Compilador Educacional</title>
+    <meta name="description" content="Interface para experimentar o compilador educacional de Python">
+    <title>Compilador Educacional | Python</title>
     <style>
       :root {
         color-scheme: light;
-        font-family: system-ui, sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         color: #172033;
         background: #eef2ff;
       }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        display: grid;
-        place-items: center;
-      }
-
-      main {
-        width: min(90vw, 680px);
-        padding: 3rem;
-        text-align: center;
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 12px 40px rgb(37 49 98 / 15%);
-      }
-
-      h1 {
-        margin-bottom: 0.5rem;
-      }
-
-      .hello {
-        margin: 2rem 0 1rem;
-        color: #4338ca;
-        font-size: clamp(2rem, 8vw, 4rem);
-      }
-
-      #status {
-        color: #526079;
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; }
+      main { width: min(100% - 2rem, 960px); margin: 0 auto; padding: 2rem 0 3rem; }
+      header, .panel { background: white; border-radius: 16px; box-shadow: 0 12px 40px rgb(37 49 98 / 12%); }
+      header { padding: 2rem; margin-bottom: 1rem; }
+      h1 { margin: 0 0 .4rem; color: #312e81; }
+      h2 { margin-top: 0; font-size: 1.1rem; }
+      .subtitle { margin: 0; color: #526079; }
+      .panel { padding: 1.5rem; }
+      .controls { display: flex; gap: .75rem; align-items: end; margin-bottom: 1rem; }
+      label { display: block; font-weight: 650; margin-bottom: .4rem; }
+      select, textarea, button { font: inherit; }
+      select, textarea { width: 100%; border: 1px solid #b8c2d9; border-radius: 8px; padding: .7rem; }
+      select { background: white; }
+      .example-control { flex: 1; }
+      textarea { display: block; min-height: 280px; resize: vertical; font-family: "Cascadia Code", Consolas, monospace; line-height: 1.5; }
+      button { border: 0; border-radius: 8px; padding: .75rem 1.2rem; background: #4f46e5; color: white; font-weight: 700; cursor: pointer; }
+      button:hover { background: #3730a3; }
+      button:disabled { cursor: wait; opacity: .65; }
+      .actions { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1rem; }
+      .hint, #status { color: #526079; font-size: .9rem; }
+      .result { margin-top: 1.5rem; padding: 1rem; border-radius: 8px; background: #f4f6fb; border-left: 4px solid #64748b; }
+      .result.success { border-left-color: #15803d; background: #f0fdf4; }
+      .result.error { border-left-color: #b91c1c; background: #fef2f2; }
+      #result-message { margin: 0; }
+      @media (max-width: 650px) {
+        .controls, .actions { align-items: stretch; flex-direction: column; }
+        button { width: 100%; }
       }
     </style>
   </head>
   <body>
     <main>
-      <h1>Compilador Educacional</h1>
-      <p>Estrutura inicial do projeto</p>
-      <div class="hello" id="message">Carregando...</div>
-      <p id="status">Verificando comunicação com o backend...</p>
+      <header>
+        <h1>Compilador Educacional</h1>
+        <p class="subtitle">Experimente o subconjunto inicial da linguagem <strong>Python</strong>.</p>
+      </header>
+      <section class="panel" aria-labelledby="editor-title">
+        <h2 id="editor-title">Código-fonte</h2>
+        <div class="controls">
+          <div class="example-control">
+            <label for="example-select">Carregar exemplo</label>
+            <select id="example-select">
+              <option value="">Selecione um exemplo...</option>
+              <option value="variable">Variável e valor</option>
+              <option value="arithmetic">Operação aritmética</option>
+              <option value="conditional">Estrutura condicional</option>
+            </select>
+          </div>
+        </div>
+        <label for="source-code">Digite ou cole um programa Python</label>
+        <textarea id="source-code" spellcheck="false" placeholder="Exemplo:&#10;numero = 10"></textarea>
+        <div class="actions">
+          <span class="hint">O analisador léxico, sintático e semântico será implementado nas próximas etapas.</span>
+          <button id="analyze-button" type="button">Enviar para análise</button>
+        </div>
+        <div class="result" id="result" aria-live="polite">
+          <p id="result-message">Insira um código ou selecione um exemplo para começar.</p>
+          <p id="result-details"></p>
+        </div>
+        <p id="status">Backend pronto para receber o código.</p>
+      </section>
     </main>
     <script src="app.js"></script>
   </body>
 </html>
-

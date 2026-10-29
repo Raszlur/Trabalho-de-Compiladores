@@ -1,0 +1,283 @@
+Trabalho 3	de 21/10/2026 às 00h00 a 29/10/2026 às 07h29	Não	25		
+# Etapa 3 — Análise Léxica (Scanner)
+
+## Contextualização
+
+Nas etapas anteriores, os alunos construíram a fundação do software educacional: repositório organizado, ambiente Docker funcional, interface web com entrada de código, exemplos selecionáveis e comunicação entre frontend e backend. Agora, na terceira etapa, o sistema começa a analisar de fato o código-fonte informado pelo usuário.
+
+O foco desta etapa é implementar (ou integrar) o analisador léxico, também chamado de scanner. O scanner é a primeira fase de um compilador: ele lê o fluxo de caracteres do programa-fonte e o transforma em uma sequência de tokens, que são as unidades mínimas com significado para a linguagem (palavras reservadas, identificadores, operadores, delimitadores, literais etc.).
+
+Pense nesta etapa como a construção da "lupa" do sistema: antes de entender a estrutura do programa (análise sintática) ou o significado (análise semântica), o software precisa primeiro enxergar o código e reconhecer suas partes. Nesta etapa, o aluno deverá entregar um scanner funcional para o subconjunto da linguagem escolhida, integrado à interface, com apresentação didática dos resultados e testes automatizados.
+
+Ao final desta etapa, o sistema deverá ser capaz de receber um programa, tokenizá-lo e exibir os tokens identificados com suas categorias, lexemas e, quando possível, posição (linha e coluna). Entradas com caracteres ou sequências inválidas deverão gerar mensagens didáticas, sem quebrar a aplicação.
+
+---
+
+## 1. Revisar o escopo da linguagem e documentar o subconjunto léxico
+
+Antes de implementar o scanner, o aluno deverá revisar e detalhar o subconjunto da linguagem definido nas etapas anteriores. É fundamental que o escopo léxico esteja explícito, pois o scanner só será capaz de reconhecer o que estiver documentado.
+
+O aluno deverá atualizar o README (ou criar um arquivo em docs/) com uma tabela contendo, no mínimo:
+
+- Palavras reservadas suportadas (ex.: int, if, else, while, return).
+- Identificadores: regra de formação (ex.: letra seguida de letras, dígitos ou _).
+- Literais: inteiros, reais, strings, caracteres, conforme o escopo.
+- Operadores: aritméticos, relacionais, lógicos e de atribuição suportados.
+- Delimitadores: parênteses, chaves, colchetes, ponto e vírgula, vírgula.
+- Comentários: se suportados, quais estilos (linha, bloco).
+- Espaços em branco: como são tratados (ignorados ou tokens).
+- Caracteres não reconhecidos: como o scanner deve se comportar.
+
+Exemplo de tabela para o subconjunto de C:
+
+Categoria            | Exemplos
+---------------------|--------------------------------------------------
+Palavras reservadas  | int, if, else, while, return
+Identificadores      | numero, resultado, _x1
+Literais inteiros    | 10, 0, 42
+Operadores           | +, -, *, /, =, ==, >, <
+Delimitadores        | (, ), {, }, ;
+Comentários          | // linha  e  /* bloco */
+
+Essa documentação será a base para os testes e para a apresentação didática ao usuário.
+
+Lembrando que pode ser qualquer linguagem de programação. Vale lembrar que seria interessante escolher uma linguagem de programação que nenhum artigo pesquisado tenha utilizado para ser um diferencial.
+
+---
+
+## 2. Implementar (ou integrar) o analisador léxico
+
+O aluno deverá implementar ou integrar um scanner compatível com o subconjunto definido. A tecnologia é livre, desde que justificada e documentada (a linguagem do scanner não precisa ser a mesma do frontend ou backend).
+
+O scanner deverá, no mínimo:
+
+- Ler o código-fonte recebido pelo backend.
+- Percorrer caractere a caractere, agrupando-os em lexemas.
+- Classificar cada lexema em uma categoria de token (palavra reservada, identificador, literal, operador, delimitador, etc.).
+- Registrar a posição de cada token (linha e coluna), quando possível.
+- Ignorar espaços em branco e comentários, conforme o escopo.
+- Reportar erros léxicos para caracteres ou sequências não reconhecidas, com localização.
+
+Estrutura sugerida para um token (JSON):
+
+{
+  "tipo": "IDENTIFICADOR",
+  "lexema": "numero",
+  "linha": 3,
+  "coluna": 5
+}
+
+Estrutura sugerida para um erro léxico (JSON):
+
+{
+  "tipo": "ERRO_LEXICO",
+  "lexema": "@",
+  "linha": 2,
+  "coluna": 10,
+  "mensagem": "Caractere não reconhecido: '@'"
+}
+
+O scanner deverá ser integrado ao backend, de modo que o endpoint de análise (definido na Etapa 2) passe a retornar a lista de tokens e eventuais erros léxicos. O contrato de comunicação deverá ser atualizado e documentado no README.
+
+Importante: nesta etapa, o sistema ainda não precisa validar a estrutura do programa (isso é papel do parser, na Etapa 4). O scanner apenas reconhece tokens; um programa com erros sintáticos, mas com tokens válidos, deve ser tokenizado normalmente.
+
+
+Poderá também ter uma usabilidade boa para ser integrado com celular, caso o seu diferencial seja um software educacional que trabalhe tanto na web como também no celular.
+
+---
+
+## 3. Integrar a análise léxica ao fluxo da aplicação
+
+O botão de análise, criado na Etapa 2, deverá agora acionar o scanner no backend. O frontend deverá enviar o código como antes, e o backend deverá:
+
+1. Validar a entrada (conforme já implementado).
+2. Executar o scanner sobre o código.
+3. Retornar uma resposta estruturada contendo:
+   - Lista de tokens identificados.
+   - Lista de erros léxicos encontrados (se houver).
+   - Indicador de sucesso ou falha da análise léxica.
+
+Exemplo de resposta do backend (JSON):
+
+{
+  "sucesso": true,
+  "tokens": [
+    { "tipo": "PALAVRA_RESERVADA", "lexema": "int", "linha": 1, "coluna": 1 },
+    { "tipo": "IDENTIFICADOR", "lexema": "numero", "linha": 1, "coluna": 5 },
+    { "tipo": "OPERADOR", "lexema": "=", "linha": 1, "coluna": 12 },
+    { "tipo": "LITERAL_INTEIRO", "lexema": "10", "linha": 1, "coluna": 14 },
+    { "tipo": "DELIMITADOR", "lexema": ";", "linha": 1, "coluna": 16 }
+  ],
+  "erros": []
+}
+
+O frontend deverá exibir os tokens de forma didática, por exemplo:
+
+- Uma tabela com colunas: tipo, lexema, linha, coluna.
+- Uma visualização colorida do código, destacando cada token conforme sua categoria (opcional, mas recomendado).
+- Uma seção de erros léxicos com mensagens claras e localização.
+
+A apresentação deve ajudar o estudante a compreender o que é um token, o que é um lexema e como o scanner percorre o código.
+
+---
+
+## 4. Tratar erros léxicos com mensagens didáticas
+
+O scanner deverá tratar situações de erro de forma compreensível, sem expor detalhes internos do sistema. No mínimo:
+
+- Caractere não reconhecido (ex.: @, #, $ fora do escopo): informar o caractere, a linha e a coluna.
+- Sequência inválida (ex.: literal malformado, comentário não fechado): informar o trecho problemático e a localização.
+- Entrada vazia ou só com espaços: já tratada na Etapa 2, mas o scanner deve ser robusto a ela.
+
+Exemplo de mensagem ao usuário:
+
+"Erro léxico na linha 2, coluna 10: caractere não reconhecido '@'. Verifique se ele faz parte do subconjunto suportado."
+
+O sistema não deve interromper a aplicação nem exibir stack traces. O scanner deve continuar processando o restante do código, acumulando erros, para que o usuário veja todos os problemas de uma vez (quando possível).
+
+Caso seja verificado nos artigos que não tenha documentação, o seu trabalho pode apresentar documentação e também um tutorial inicial para os alunos, esse pode ser um diferencial do seu trabalho com outros pesquisados na literatura.
+
+---
+
+## 5. Apresentar os resultados de forma didática
+
+Além da tabela de tokens, recomenda-se que a interface ofereça recursos que ajudem o estudante a entender o processo de tokenização:
+
+- Destaque visual dos tokens no código-fonte (cores por categoria).
+- Explicação curta sobre o que é um token e um lexema.
+- Contagem de tokens por categoria.
+- Comparação entre o código original e a sequência de tokens.
+- Exemplos que demonstrem diferentes categorias de tokens.
+
+Esses recursos são opcionais, mas contribuem para o objetivo educacional do software. O importante é que o usuário consiga ver o que o scanner fez com seu código.
+
+Obs: Apresentar os resultados didático com efeitos e passo a passo pode ser um diferencial de sua proposta quando comparada com os outros softwares educacionais estudados.
+
+---
+
+## 6. Criar testes automatizados para o scanner
+
+Seguindo a prática adotada desde a Etapa 2, cada nova funcionalidade deve ser acompanhada de testes automatizados. Para o scanner, os testes deverão cobrir, no mínimo:
+
+### 6.1. Testes unitários do scanner
+
+- Palavras reservadas: cada palavra do subconjunto é reconhecida corretamente.
+- Identificadores: formações válidas (letras, dígitos, _) e inválidas.
+- Literais: inteiros, reais, strings e caracteres, conforme o escopo.
+- Operadores: cada operador suportado, incluindo operadores compostos (==, !=, <=, >=).
+- Delimitadores: cada delimitador suportado.
+- Comentários: linhas e blocos são ignorados corretamente.
+- Espaços em branco: ignorados sem gerar tokens.
+- Posição: linha e coluna corretas para tokens em diferentes posições.
+- Erros léxicos: caracteres inválidos geram erro com localização.
+- Casos de borda: código vazio, apenas espaços, apenas comentários, token no fim do arquivo sem quebra de linha.
+
+### 6.2. Testes dos endpoints do backend
+
+- Requisição válida retorna lista de tokens e sucesso: true.
+- Requisição com erro léxico retorna sucesso: false (ou equivalente) e lista de erros.
+- Requisição vazia continua sendo tratada como na Etapa 2.
+- Formato da resposta está de acordo com o contrato documentado.
+- Códigos HTTP adequados.
+
+### 6.3. Testes de interface
+
+- Tokens são exibidos na tabela após a análise.
+- Erros léxicos são exibidos com mensagem clara.
+- A interface não quebra com entradas inválidas.
+- Funcionalidades da Etapa 2 (exemplos, edição, validação) continuam funcionando.
+
+### 6.4. Testes de regressão
+
+- Executar todos os testes das Etapas 1 e 2 para garantir que nada foi quebrado.
+- Verificar que a comunicação frontend-backend continua funcional.
+- Verificar que o ambiente Docker Compose continua subindo corretamente.
+
+Registro dos testes: manter em docs/ um arquivo com os comandos executados, resultados obtidos, falhas encontradas e correções realizadas, conforme orientação da Etapa 2.
+
+Os testes automatizados ajuda a testar se uma nova funcionalidade não quebrou uma anterior que já funcionava, tente sempre ir atualizando a bateria de testes.
+
+---
+
+## 7. Manter o ambiente Docker funcional
+
+As alterações desta etapa (novos módulos do scanner, dependências, endpoints) não deverão comprometer a inicialização via Docker Compose. O aluno deverá:
+
+- Atualizar os Dockerfiles, se necessário (ex.: novas dependências do scanner).
+- Verificar se os serviços sobem corretamente.
+- Verificar se a comunicação frontend-backend continua funcional dentro dos contêineres.
+- Documentar novas variáveis de ambiente ou portas, se houver.
+- Não incluir segredos ou credenciais no repositório.
+
+Após as alterações, executar a aplicação com os comandos documentados no README e validar o fluxo completo: inserir código -> solicitar análise -> visualizar tokens.
+
+---
+
+## 8. Atualizar a documentação
+
+O README (e arquivos em docs/) deverá ser atualizado com:
+
+- Escopo léxico da linguagem (tabela de categorias e exemplos).
+- Descrição do scanner: como foi implementado ou integrado, tecnologia utilizada e justificativa.
+- Contrato de comunicação atualizado: formato da requisição e da resposta, incluindo tokens e erros.
+- Exemplos de entrada e saída do scanner.
+- Comandos para executar os testes do scanner e resultados relevantes.
+- Limitações conhecidas: o que o scanner ainda não reconhece, o que será tratado nas próximas etapas.
+- Relação com a Etapa 4: deixar claro que a análise sintática ainda não foi implementada.
+
+A documentação deverá refletir o que realmente foi implementado, sem declarar funcionalidades que ainda não existem.
+
+---
+
+## 9. Validar a entrega em ambiente reproduzível
+
+Antes de finalizar, o aluno deverá:
+
+1. Seguir os comandos do README em um ambiente limpo (ou simulado).
+2. Subir os contêineres com Docker Compose.
+3. Acessar a interface, inserir um código, selecionar um exemplo, editar e solicitar a análise.
+4. Verificar se os tokens são exibidos corretamente.
+5. Verificar se erros léxicos são apresentados com mensagens claras.
+6. Executar todos os testes automatizados (scanner, endpoints, interface, regressão).
+7. Registrar quais verificações passaram e quais ainda estão pendentes.
+
+Caso algo falhe, corrigir e repetir os testes afetados antes de considerar a etapa concluída.
+
+---
+
+## 10. Entregáveis da terceira etapa
+
+Ao final desta etapa, o aluno deverá apresentar:
+
+1. Scanner funcional para o subconjunto da linguagem, integrado ao backend.
+2. Endpoint de análise atualizado, retornando tokens e erros léxicos conforme contrato documentado.
+3. Interface atualizada, exibindo tokens de forma didática (tabela, destaque ou equivalente) e erros léxicos com mensagens claras.
+4. Tratamento de erros léxicos, sem expor informações internas e sem quebrar a aplicação.
+5. Testes automatizados do scanner (unitários), dos endpoints, da interface e de regressão.
+6. Registro dos testes executados, com comandos, resultados e falhas corrigidas.
+7. Ambiente Docker Compose funcional, com o fluxo completo validado.
+8. README e documentação atualizados, incluindo escopo léxico, contrato de comunicação, exemplos e limitações.
+9. Repositório GitHub atualizado, com commits descritivos das alterações.
+10. Demonstração da análise léxica, mostrando o fluxo desde a entrada do código até a exibição dos tokens e erros.
+
+---
+
+## 11. Resultado esperado
+
+Ao concluir a terceira etapa, o software educacional deverá ser capaz de tokenizar programas escritos no subconjunto da linguagem escolhida, exibindo os tokens identificados com suas categorias, lexemas e posições, além de reportar erros léxicos de forma didática.
+
+O sistema ainda não analisará a estrutura sintática nem o significado do programa — essas funcionalidades serão desenvolvidas nas etapas seguintes. O importante agora é que o estudante possa ver como o scanner percorre o código e reconhece suas unidades mínimas, compreendendo a primeira fase do processo de compilação.
+
+A base construída nas Etapas 1 e 2 (Docker, interface, comunicação, testes, documentação) deverá ser preservada e ampliada, não reconstruída. As funcionalidades anteriores devem continuar funcionando, e os testes de regressão devem confirmar isso.
+
+---
+
+## 12. Orientação final
+
+Desenvolva esta etapa aproveitando o código das Etapas 1 e 2. Evite reconstruir a aplicação ou introduzir tecnologias que não contribuam para os objetivos. Priorize mudanças incrementais e verificáveis.
+
+A cada nova funcionalidade do scanner, solicite à IA a criação ou atualização dos testes automatizados correspondentes e execute os testes anteriores para verificar se o sistema continua funcionando. Os testes fazem parte do desenvolvimento da funcionalidade e não devem ser deixados para o final.
+
+Lembre-se: o scanner é a porta de entrada para as análises seguintes. Um scanner bem implementado, testado e documentado facilitará muito o desenvolvimento do parser (Etapa 4) e da análise semântica (Etapa 5). 
+
+Observação importante: Vale lembrar que tentar implementar algo novo que os artigos não implementaram, tente identificar algo de diferente. Outra abordagem é implementar tudo o que eles tem para se o seu for o único que tem todos, já é um diferencial.

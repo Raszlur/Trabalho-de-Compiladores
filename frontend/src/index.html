@@ -38,6 +38,14 @@
       .result.success { border-left-color: #15803d; background: #f0fdf4; }
       .result.error { border-left-color: #b91c1c; background: #fef2f2; }
       #result-message { margin: 0; }
+      .analysis-section { margin-top: 1.5rem; }
+      .analysis-section h3 { margin-bottom: .5rem; }
+      .explanation { color: #526079; font-size: .9rem; }
+      .token-table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+      .token-table th, .token-table td { border-bottom: 1px solid #dbe1ef; padding: .55rem; text-align: left; }
+      .token-table th { background: #eef2ff; }
+      .token-table code { white-space: pre-wrap; overflow-wrap: anywhere; }
+      .errors { margin: 0; padding-left: 1.25rem; color: #991b1b; }
       @media (max-width: 650px) {
         .controls, .actions { align-items: stretch; flex-direction: column; }
         button { width: 100%; }
@@ -66,7 +74,7 @@
         <label for="source-code">Digite ou cole um programa Python</label>
         <textarea id="source-code" spellcheck="false" placeholder="Exemplo:&#10;numero = 10"></textarea>
         <div class="actions">
-          <span class="hint">O analisador léxico, sintático e semântico será implementado nas próximas etapas.</span>
+          <span class="hint">O scanner reconhece tokens; a análise sintática será implementada na próxima etapa.</span>
           <button id="analyze-button" type="button">Enviar para análise</button>
         </div>
         <div class="result" id="result" aria-live="polite">
@@ -74,6 +82,19 @@
           <p id="result-details"></p>
         </div>
         <p id="status">Backend pronto para receber o código.</p>
+        <section class="analysis-section" aria-labelledby="tokens-title">
+          <h3 id="tokens-title">Tokens identificados</h3>
+          <p class="explanation">Token é a unidade reconhecida pelo scanner; lexema é o texto original que deu origem a ela.</p>
+          <div id="token-count" class="hint"></div>
+          <table class="token-table">
+            <thead><tr><th>Tipo</th><th>Lexema</th><th>Linha</th><th>Coluna</th></tr></thead>
+            <tbody id="token-table-body"></tbody>
+          </table>
+        </section>
+        <section class="analysis-section" aria-labelledby="errors-title">
+          <h3 id="errors-title">Erros léxicos</h3>
+          <ul id="lexical-errors" class="errors"></ul>
+        </section>
       </section>
     </main>
     <script src="app.js"></script>

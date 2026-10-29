@@ -1,6 +1,8 @@
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 
+from scanner import scan
+
 MAX_SOURCE_LENGTH = 100_000
 
 
@@ -68,13 +70,21 @@ class ApiHandler(BaseHTTPRequestHandler):
             self._send_json(413, {"mensagem": "O código-fonte excede o limite permitido."})
             return
 
+        tokens, erros = scan(codigo)
         self._send_json(
             200,
             {
-                "mensagem": "Código recebido com sucesso. A análise será adicionada nas próximas etapas.",
+                "mensagem": (
+                    "Análise léxica concluída com sucesso."
+                    if not erros
+                    else "Análise léxica concluída com erros. Consulte os detalhes."
+                ),
                 "recebido": True,
                 "caracteres": len(codigo),
                 "linhas": len(codigo.splitlines()) or 1,
+                "sucesso": not erros,
+                "tokens": tokens,
+                "erros": erros,
             },
         )
 

@@ -1,0 +1,349 @@
+Segunda Etapa do Projeto: Interface Web e Entrada de Código-Fonte
+Bem-vindo à segunda etapa da construção do seu software educacional de compiladores!
+
+Na primeira etapa, você preparou a estrutura inicial do projeto, escolheu a linguagem de programação que será analisada, organizou o repositório no GitHub e configurou o ambiente Docker para executar a aplicação. Agora, chegou o momento de começar a construir a funcionalidade principal do sistema: permitir que o usuário escreva ou insira um programa na linguagem escolhida e solicite sua análise.
+
+Nesta fase, o objetivo ainda não é implementar completamente as análises léxica, sintática e semântica. Essas funcionalidades serão desenvolvidas nas próximas etapas. O foco agora é criar uma interface funcional, estabelecer a comunicação entre os componentes da aplicação e preparar o sistema para receber o código-fonte que será analisado futuramente.
+
+Pense nesta etapa como a construção da porta de entrada do seu software. Antes de analisar um programa, o sistema precisa oferecer uma maneira organizada para que o usuário informe o código, escolha um exemplo, solicite a análise e compreenda as respostas apresentadas pela aplicação.
+
+Além de desenvolver as funcionalidades, você deverá adotar uma prática fundamental da engenharia de software: implementar testes automatizados continuamente, acompanhando cada nova funcionalidade e cada modificação relevante do sistema. A intenção é verificar não apenas se o novo recurso funciona, mas também se as funcionalidades desenvolvidas anteriormente continuam operando corretamente.
+
+Ao final desta etapa, você deverá ter uma interface web funcional, executada por meio do Docker Compose, na qual o usuário poderá inserir um código-fonte, selecionar um exemplo de programa e acionar um botão para solicitar seu processamento. A aplicação deverá validar a entrada, apresentar mensagens compreensíveis e possuir testes automatizados que ajudem a verificar a qualidade e a estabilidade do sistema.
+
+1. Criar a tela principal da aplicação
+O primeiro passo é substituir a interface inicial da primeira etapa por uma tela que represente o propósito do software educacional.
+
+A interface deverá identificar claramente o projeto e a linguagem de programação escolhida por você. Por exemplo, se você definiu que seu projeto analisará um subconjunto da linguagem C, essa informação deverá estar visível para o usuário.
+
+A tela deverá conter, no mínimo, os seguintes elementos:
+
+Identificação do sistema: nome do software educacional e linguagem de programação analisada.
+
+Área de entrada de código: campo apropriado para escrever, colar ou editar um programa-fonte.
+
+Botão de análise: botão que permita ao usuário solicitar o processamento do código informado.
+
+Área de resultados: espaço reservado para apresentar o retorno da aplicação, incluindo mensagens de validação, erros e resultados futuros das análises.
+
+Seleção de exemplos: mecanismo para escolher programas previamente preparados por você.
+
+A interface deverá ser organizada de maneira que o usuário compreenda facilmente onde inserir o código, como solicitar seu processamento e onde visualizar as respostas.
+
+Não é necessário implementar um editor de código avançado. Um campo de texto com fonte monoespaçada, boa legibilidade e espaço suficiente para visualizar um pequeno programa já pode atender ao objetivo desta etapa. Recursos como realce de sintaxe, numeração de linhas e autocompletar são opcionais.
+
+Procure desenvolver uma interface simples, intuitiva e consistente. Lembre-se de que o público-alvo é formado por estudantes que utilizarão o sistema para compreender os conceitos relacionados aos compiladores.
+
+Recomendação sobre testes: depois de implementar a tela, solicite à IA a criação de testes automatizados para verificar se os elementos esperados são apresentados corretamente e se as principais interações funcionam. Esses testes deverão ser executados sempre que houver modificações relevantes na interface, de modo a identificar possíveis regressões.
+
+2. Implementar a entrada e a edição de código-fonte
+O segundo passo é permitir que o usuário informe o código que deseja analisar.
+
+A área de entrada deverá aceitar textos que representem programas escritos na linguagem escolhida por você, respeitando o escopo definido para o projeto.
+
+Por exemplo, se você escolheu a linguagem C, poderá utilizar o seguinte programa:
+
+#include <stdio.h> int main() { int numero = 10; printf("%d\n", numero); return 0; }
+O exemplo acima deverá ser tratado como uma entrada de texto. Nesta etapa, não é necessário executar o programa nem verificar se ele está sintaticamente correto por meio de um parser. O objetivo é garantir que o usuário consiga informar o código e que a aplicação consiga recebê-lo.
+
+A aplicação deverá permitir que o conteúdo digitado permaneça disponível durante a interação com a interface e possa ser enviado ao componente responsável pelo processamento.
+
+Também deverá ser possível substituir o código inicial, editar o conteúdo existente e experimentar diferentes entradas.
+
+Atenção: o sistema não deverá presumir que todo código informado pelo usuário é válido. O código poderá conter erros intencionais, pois, nas etapas seguintes, essas entradas serão utilizadas para demonstrar como um compilador identifica problemas em um programa.
+
+Recomendação sobre testes: solicite à IA que implemente testes automatizados para verificar a edição, a preservação e o envio do código-fonte. Inclua casos com código válido, texto vazio, espaços em branco e entradas com caracteres especiais. Verifique também se a nova implementação não prejudicou as funcionalidades já testadas.
+
+3. Disponibilizar exemplos de programas
+O terceiro passo é criar exemplos mínimos que ajudem o usuário a experimentar a aplicação sem precisar escrever todo o código manualmente.
+
+Prepare pelo menos três exemplos de programas escritos na linguagem escolhida. Os exemplos deverão estar relacionados ao subconjunto que você pretende implementar nas próximas etapas.
+
+Para um projeto desenvolvido em C, por exemplo, podem ser utilizados:
+
+Exemplo 1 — Declaração e inicialização de variável
+
+int numero = 10;
+Exemplo 2 — Operação aritmética
+
+int resultado = 10 + 5;
+Exemplo 3 — Estrutura condicional
+
+if (numero > 0) { numero = numero + 1; }
+Esses exemplos são ilustrativos. Você deverá adaptá-los à linguagem escolhida e ao escopo definido para o seu projeto. Caso uma construção ainda não faça parte do subconjunto previsto, ela poderá ser substituída por outra mais adequada.
+
+A interface deverá permitir que o usuário selecione um exemplo e visualize seu conteúdo na área de entrada de código. A seleção deverá preencher o campo de edição, permitindo que o usuário modifique o programa antes de solicitar a análise.
+
+Além disso, registre no README quais exemplos foram disponibilizados e quais construções da linguagem cada um pretende demonstrar.
+
+Recomendação sobre testes: solicite à IA testes automatizados para verificar se cada exemplo pode ser selecionado, se o código correspondente é carregado corretamente e se a escolha de um novo exemplo substitui o conteúdo anterior conforme o comportamento esperado. Os testes deverão contemplar os exemplos individualmente e verificar se a seleção não interfere em outras funcionalidades da interface.
+
+4. Definir a comunicação entre frontend e backend
+O quarto passo é estabelecer a comunicação entre as partes da aplicação.
+
+Se o seu projeto foi desenvolvido com frontend e backend separados, você deverá definir como o código-fonte será enviado da interface para o servidor e como a resposta será devolvida ao usuário.
+
+Por exemplo, ao clicar no botão de análise, o frontend poderá enviar uma requisição HTTP contendo o código-fonte informado. O backend receberá essa requisição, verificará se a entrada pode ser processada e retornará uma resposta estruturada.
+
+Uma possibilidade de requisição utilizando JSON é:
+
+{ "codigo": "int numero = 10;" }
+A resposta poderá informar que o código foi recebido:
+
+{ "mensagem": "Código recebido com sucesso.", "recebido": true }
+Os nomes dos campos são apenas exemplos. Você deverá definir e documentar o formato efetivamente utilizado no seu projeto.
+
+O mais importante é que a comunicação seja real e verificável. Não basta que o botão exiba uma mensagem fixa no frontend sem realizar o processamento previsto pela arquitetura escolhida.
+
+Se o projeto utilizar um único componente para a interface e o processamento, documente essa decisão e implemente a separação lógica necessária para facilitar a inclusão dos analisadores nas próximas etapas.
+
+Importante: nesta fase, o backend ainda não precisa executar a análise léxica, sintática ou semântica. Ele deverá receber o código, realizar as validações iniciais necessárias e retornar uma resposta coerente com o comportamento implementado. A análise propriamente dita será desenvolvida nas etapas seguintes.
+
+Recomendação sobre testes: solicite à IA a criação de testes automatizados para os endpoints do backend e para a comunicação entre frontend e backend. Esses testes deverão verificar, conforme o contrato definido:
+
+O comportamento de requisições válidas.
+
+O formato e o conteúdo das respostas.
+
+Os códigos HTTP retornados.
+
+O tratamento de campos obrigatórios ausentes ou inválidos.
+
+O tratamento de erros e falhas de comunicação.
+
+A compatibilidade do endpoint com as funcionalidades já existentes.
+
+Sempre que um endpoint for criado ou modificado, atualize os testes correspondentes e execute também os testes de regressão relacionados.
+
+5. Implementar validações de entrada e mensagens de erro
+O quinto passo é tratar as situações em que o usuário informa dados inadequados ou em que a comunicação entre os componentes não funciona como esperado.
+
+A aplicação deverá, no mínimo, tratar as seguintes situações:
+
+Entrada vazia: se o usuário solicitar a análise sem informar código, o sistema deverá apresentar uma mensagem explicando que é necessário inserir um programa.
+
+Entrada composta apenas por espaços: a aplicação deverá reconhecer que não existe conteúdo útil para processar e apresentar uma orientação ao usuário.
+
+Requisição inválida: o backend deverá tratar dados ausentes ou em formato inadequado, de acordo com o contrato de comunicação definido.
+
+Falha de comunicação: se o frontend não conseguir obter uma resposta do backend, deverá apresentar uma mensagem compreensível, sem deixar a interface em um estado inconsistente.
+
+Erro inesperado: a aplicação deverá apresentar uma mensagem genérica e adequada, sem expor informações internas desnecessárias.
+
+Por exemplo, para uma entrada vazia, uma mensagem apropriada seria:
+
+"Informe um código-fonte antes de solicitar a análise."
+
+Já para uma falha de comunicação, uma mensagem possível seria:
+
+"Não foi possível comunicar com o servidor. Verifique a conexão e tente novamente."
+
+As validações deverão ser implementadas nos locais apropriados. O frontend poderá verificar a entrada antes de enviar a requisição, mas o backend também deverá validar os dados recebidos, pois não se deve depender exclusivamente das verificações realizadas na interface.
+
+Não exponha ao usuário informações sensíveis, credenciais, variáveis de ambiente, caminhos internos do servidor ou rastreamentos completos de exceções.
+
+Nesta etapa, as mensagens deverão diferenciar problemas de entrada e falhas de comunicação. A classificação específica entre erros léxicos, sintáticos e semânticos será desenvolvida posteriormente, quando os respectivos analisadores estiverem implementados.
+
+Recomendação sobre testes: para cada nova validação ou tratamento de erro, solicite à IA testes automatizados que verifiquem tanto os casos esperados quanto as situações excepcionais. Inclua testes dos endpoints, quando aplicável, e testes de interface para confirmar que a mensagem correta é apresentada ao usuário.
+
+Depois de implementar uma validação, execute os testes anteriores para verificar se ela não bloqueou entradas que deveriam ser aceitas nem alterou indevidamente o comportamento já implementado.
+
+6. Adotar testes automatizados a cada nova funcionalidade
+Esta orientação deverá ser aplicada durante todo o projeto, desde a segunda etapa até a entrega final.
+
+O desenvolvimento não deverá seguir a lógica de implementar todas as funcionalidades primeiro e deixar os testes para o final. Em vez disso, cada nova funcionalidade ou modificação relevante deverá ser acompanhada da criação ou atualização dos testes automatizados correspondentes.
+
+Sempre que iniciar uma nova funcionalidade, utilize a IA como apoio tanto na implementação quanto na elaboração dos testes. Informe claramente quais comportamentos devem ser verificados, quais funcionalidades anteriores podem ser afetadas e quais resultados são esperados.
+
+Por exemplo, ao implementar um botão para carregar exemplos, não solicite apenas o código do botão. Solicite também testes que verifiquem se os exemplos são carregados corretamente, se o conteúdo pode ser editado e se o envio do código continua funcionando.
+
+Ao criar um endpoint, não solicite apenas sua implementação. Peça testes que verifiquem as respostas esperadas, os códigos HTTP, os dados inválidos e o comportamento em situações excepcionais.
+
+Ao modificar a configuração do Docker Compose, não se limite a verificar se o arquivo foi alterado. Solicite testes ou verificações automatizadas que confirmem se os serviços iniciam, se a aplicação fica acessível e se a comunicação entre os componentes permanece funcional.
+
+6.1. Tipos de testes que podem ser utilizados
+Você poderá utilizar diferentes tipos de testes, de acordo com as tecnologias e a arquitetura do seu projeto.
+
+a) Testes unitários
+
+Verificam funções ou módulos individualmente. São úteis para testar validações de entrada, transformações de dados e outras regras isoladas.
+
+b) Testes dos endpoints do backend
+
+Verificam se as rotas da API recebem as requisições esperadas, validam os dados, retornam os códigos HTTP adequados e apresentam respostas compatíveis com o contrato definido.
+
+c) Testes de integração
+
+Verificam se componentes diferentes funcionam corretamente em conjunto, como frontend e backend ou backend e banco de dados, caso exista.
+
+d) Testes de interface
+
+Verificam se os elementos são exibidos corretamente e se as interações funcionam, incluindo botões, campos de texto, seletores de exemplos e mensagens de erro.
+
+e) Testes de ponta a ponta (end-to-end)
+
+Simulam um fluxo completo de utilização, desde o acesso à interface até o envio de código e a apresentação da resposta. Podem ser automatizados com ferramentas compatíveis com a tecnologia utilizada.
+
+f) Testes de implantação e ambiente
+
+Verificam se a aplicação pode ser construída e iniciada conforme as instruções documentadas, se os contêineres ficam operacionais e se os serviços necessários conseguem se comunicar. Conforme a infraestrutura, podem incluir verificações de disponibilidade, inicialização e saúde dos serviços.
+
+g) Testes de regressão
+
+Verificam se funcionalidades que já funcionavam continuam funcionando após novas alterações. Na prática, os testes unitários, de integração, de interface e de ponta a ponta já existentes podem compor essa verificação.
+
+Você não precisa implementar todas essas categorias de uma só vez. Escolha as ferramentas e os tipos de teste adequados ao seu projeto, priorizando uma cobertura progressiva dos comportamentos mais importantes.
+
+6.2. Procedimento recomendado para cada nova funcionalidade
+Sempre que desenvolver uma nova funcionalidade, siga este procedimento:
+
+Defina o comportamento esperado. Descreva o que a funcionalidade deve fazer, quais entradas aceita e quais resultados deve produzir.
+
+Solicite a implementação à IA. Informe o contexto do projeto, as tecnologias utilizadas e as restrições que devem ser respeitadas.
+
+Solicite os testes automatizados correspondentes. Peça à IA que crie ou atualize os testes para os novos comportamentos e para os casos de erro relevantes.
+
+Execute os testes existentes e os novos. Verifique se a funcionalidade está correta e se os recursos anteriores continuam funcionando.
+
+Analise as falhas. Caso algum teste falhe, investigue a causa. Não altere um teste apenas para fazê-lo passar sem verificar se o resultado esperado continua correto.
+
+Corrija e teste novamente. Após corrigir o código, execute novamente os testes afetados e os testes de regressão pertinentes.
+
+Registre as alterações. Documente o que foi implementado, quais testes foram executados e quais resultados foram obtidos.
+
+Se uma alteração modificar intencionalmente um comportamento anterior, atualize os testes correspondentes e documente a decisão. Não mantenha testes que representem um comportamento antigo quando ele tiver sido substituído por um requisito válido e documentado.
+
+6.3. Exemplo de solicitação à IA
+Você poderá utilizar uma instrução semelhante à seguinte sempre que iniciar uma nova funcionalidade:
+
+"Analise a estrutura atual do meu projeto e implemente a funcionalidade solicitada respeitando a arquitetura, as tecnologias, os nomes existentes e as regras de negócio. Junto com a implementação, crie ou atualize os testes automatizados necessários para verificar o comportamento esperado, os casos inválidos e os possíveis erros. Considere também os testes existentes e verifique se a nova alteração pode quebrar funcionalidades anteriores. Execute os testes disponíveis, apresente os comandos utilizados, os resultados obtidos e as falhas encontradas. Não afirme que os testes passaram sem executá-los e não altere testes existentes apenas para ocultar erros."
+
+Adapte essa instrução conforme a tarefa. A IA é uma ferramenta de apoio e pode produzir código ou testes incorretos. Portanto, você deverá revisar as alterações, compreender o que foi implementado e conferir os resultados da execução.
+
+6.4. Registrar os resultados dos testes
+Mantenha um registro dos testes realizados durante o desenvolvimento. Esse registro poderá ficar em um arquivo na pasta docs/, em relatórios produzidos pelas ferramentas ou em outra estrutura adequada ao projeto.
+
+Para cada execução relevante, registre:
+
+Funcionalidade ou módulo testado.
+
+Tipo de teste realizado.
+
+Comando utilizado para executar os testes.
+
+Quantidade de testes aprovados e reprovados, quando disponibilizada pela ferramenta.
+
+Falhas encontradas e correções realizadas.
+
+Limitações ou testes que ainda precisam ser implementados.
+
+Não é necessário copiar todos os registros de execução para o README. O importante é que os resultados relevantes sejam rastreáveis e que seja possível demonstrar que o sistema foi testado durante sua evolução.
+
+Objetivo desta prática: fazer com que o conjunto de testes cresça junto com o software. Dessa forma, cada nova etapa poderá aproveitar os testes anteriores para identificar regressões e reduzir o risco de que uma alteração aparentemente pequena prejudique funcionalidades já implementadas.
+
+7. Manter o ambiente Docker funcional
+O sétimo passo é garantir que as novas funcionalidades continuem funcionando no ambiente Docker configurado na primeira etapa.
+
+As alterações realizadas não deverão comprometer a inicialização da aplicação por meio do Docker Compose.
+
+Verifique se os serviços necessários iniciam corretamente, se a interface consegue acessar o backend e se as configurações de comunicação funcionam dentro do ambiente de contêineres.
+
+Lembre-se de que o endereço utilizado para acessar o backend a partir do navegador pode ser diferente do endereço utilizado entre contêineres. Por exemplo, o nome de um serviço do Docker Compose pode ser resolvido dentro da rede Docker, mas não necessariamente pelo navegador executado na máquina do usuário.
+
+Portanto, configure a comunicação de acordo com a arquitetura escolhida e evite depender de endereços que funcionem apenas na máquina de desenvolvimento.
+
+Após as alterações, execute a aplicação utilizando os comandos documentados no README e verifique se as funcionalidades continuam disponíveis.
+
+Se forem necessárias novas variáveis de ambiente, portas ou configurações, documente-as e evite incluir senhas, tokens ou outras credenciais no repositório.
+
+Recomendação sobre testes: sempre que modificar Dockerfiles, Docker Compose, configurações de rede ou dependências necessárias à execução, solicite à IA verificações automatizadas ou testes de implantação adequados. Quando aplicável, verifique a construção das imagens, a inicialização dos serviços, os mecanismos de saúde e a disponibilidade dos endpoints.
+
+Depois dessas alterações, execute também os testes funcionais pertinentes. Uma aplicação que inicia corretamente não está necessariamente funcionando corretamente; é importante verificar tanto a implantação quanto os comportamentos da aplicação.
+
+8. Atualizar a documentação do projeto
+O oitavo passo é atualizar o arquivo README.md para registrar a evolução do software.
+
+A documentação deverá permitir que outra pessoa compreenda o objetivo da aplicação, identifique a linguagem analisada e execute a versão atualizada do projeto.
+
+Atualize o README com as seguintes informações:
+
+Objetivo do software educacional.
+
+Linguagem de programação escolhida e subconjunto previsto.
+
+Tecnologias utilizadas no frontend e no backend, quando aplicável.
+
+Instruções para iniciar e encerrar a aplicação com Docker Compose.
+
+Instruções para acessar a interface web.
+
+Descrição da área de entrada de código e do funcionamento dos exemplos.
+
+Formato de comunicação entre frontend e backend, quando houver separação.
+
+Exemplos de programas disponíveis.
+
+Ferramentas e comandos utilizados para executar os testes.
+
+Resultados relevantes dos testes realizados.
+
+Limitações conhecidas da versão atual.
+
+A documentação deverá refletir o que realmente foi implementado. Não declare que o sistema realiza análise léxica, sintática ou semântica se essas funcionalidades ainda não estiverem disponíveis.
+
+Organize também o código-fonte de maneira que os módulos relacionados à interface, à comunicação, às validações e aos testes possam ser identificados e mantidos com facilidade.
+
+Por fim, registre as alterações no Git e envie os commits ao seu repositório GitHub compartilhado com o professor. Utilize mensagens de commit que descrevam objetivamente o que foi desenvolvido.
+
+9. Validar a entrega em um ambiente reproduzível
+Antes de finalizar esta etapa, execute uma verificação geral da aplicação.
+
+A validação deverá demonstrar que uma pessoa consegue iniciar o projeto seguindo as instruções documentadas, acessar a interface, selecionar um exemplo, editar o código e solicitar seu processamento.
+
+Verifique também se as mensagens de validação são apresentadas corretamente, se a comunicação entre os componentes funciona e se os testes documentados podem ser executados.
+
+Execute o conjunto de testes automatizados disponível, incluindo os testes das funcionalidades anteriores e os testes adicionados nesta etapa. Caso algum teste falhe, investigue o motivo antes de concluir a entrega.
+
+Sempre que possível, realize essa validação em um ambiente limpo ou reproduza as condições de uma instalação nova, sem depender de configurações locais que não estejam documentadas.
+
+Caso identifique problemas, corrija-os e repita os testes afetados antes de considerar a etapa concluída.
+
+Não declare que o sistema foi validado integralmente se apenas parte dos testes tiver sido executada. Registre com clareza quais verificações foram realizadas, quais passaram e quais ainda estão pendentes.
+
+10. Entregáveis da segunda etapa
+Ao final desta etapa, você deverá apresentar:
+
+Interface web funcional, contendo identificação do sistema, linguagem escolhida, área de entrada de código, botão de análise e área de resultados.
+
+Entrada e edição de código-fonte, permitindo que o usuário escreva, cole e modifique programas.
+
+Pelo menos três exemplos de programas, selecionáveis pela interface e compatíveis com o escopo planejado.
+
+Comunicação funcional entre frontend e backend, quando a arquitetura utilizar componentes separados, com envio de código e retorno verificável.
+
+Validações de entrada e mensagens de erro, contemplando entradas vazias, requisições inválidas e falhas de comunicação.
+
+Testes automatizados, cobrindo os principais comportamentos implementados, incluindo testes de interface, endpoints e integração, conforme aplicável.
+
+Testes de regressão, verificando se as funcionalidades anteriores continuam operando após as novas alterações.
+
+Ambiente Docker Compose funcional, com verificações adequadas de inicialização e comunicação entre os serviços.
+
+README atualizado, com instruções de execução, descrição das funcionalidades, exemplos, comandos de teste, resultados e limitações.
+
+Repositório GitHub atualizado, contendo o código-fonte, os testes e os registros das alterações realizadas.
+
+Demonstração da aplicação, mostrando o fluxo desde a entrada do código até a apresentação da resposta do sistema e apresentando evidências da execução dos testes.
+
+11. Resultado esperado
+Ao concluir a segunda etapa, seu software deverá deixar de ser apenas uma aplicação inicial de demonstração e passar a oferecer uma interface adequada para a experimentação com programas da linguagem escolhida.
+
+O usuário deverá conseguir inserir ou selecionar um código-fonte, solicitar seu processamento e visualizar uma resposta produzida pela aplicação. O ambiente deverá continuar reproduzível com Docker Compose, e o projeto deverá possuir testes automatizados e documentação atualizada.
+
+Não se preocupe se o sistema ainda não identificar palavras reservadas, operadores, erros sintáticos ou problemas semânticos. Essas funcionalidades serão desenvolvidas progressivamente nas próximas etapas.
+
+O importante agora é construir uma base de interação confiável, com uma arquitetura organizada, testes que acompanhem a evolução do software e documentação fiel ao que foi implementado.
+
+Orientação final: desenvolva esta etapa aproveitando o código produzido na primeira fase. Evite reconstruir desnecessariamente a aplicação ou introduzir tecnologias que não contribuam para os objetivos definidos. Priorize mudanças incrementais e verificáveis.
+
+Lembre-se: a cada nova funcionalidade, solicite à IA a criação ou atualização dos testes automatizados correspondentes e execute os testes anteriores para verificar se o sistema continua funcionando. Os testes fazem parte do desenvolvimento da funcionalidade, e não devem ser deixados apenas para o final do projeto.

@@ -42,8 +42,18 @@ class ApiTestCase(unittest.TestCase):
         status, data = self.request("POST", "/api/analyze", {"codigo": "x = 10\n"})
         self.assertEqual(status, 200)
         self.assertTrue(data["recebido"])
+        self.assertTrue(data["sucesso"])
+        self.assertEqual([token["lexema"] for token in data["tokens"]], ["x", "=", "10"])
+        self.assertEqual(data["erros"], [])
         self.assertEqual(data["linhas"], 1)
         self.assertEqual(data["caracteres"], 7)
+
+    def test_analyze_reports_lexical_errors_without_failing_request(self):
+        status, data = self.request("POST", "/api/analyze", {"codigo": "x = @"})
+        self.assertEqual(status, 200)
+        self.assertFalse(data["sucesso"])
+        self.assertEqual(data["tokens"][0]["lexema"], "x")
+        self.assertEqual(data["erros"][0]["tipo"], "ERRO_LEXICO")
 
     def test_analyze_rejects_empty_or_missing_source(self):
         for body in ({"codigo": "   "}, {}, {"codigo": 10}):

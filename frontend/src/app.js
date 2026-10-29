@@ -11,11 +11,41 @@ const resultElement = document.querySelector("#result");
 const resultMessageElement = document.querySelector("#result-message");
 const resultDetailsElement = document.querySelector("#result-details");
 const statusElement = document.querySelector("#status");
+const tokenCountElement = document.querySelector("#token-count");
+const tokenTableBodyElement = document.querySelector("#token-table-body");
+const lexicalErrorsElement = document.querySelector("#lexical-errors");
 
 function showResult(message, type = "", details = "") {
   resultElement.className = `result ${type}`.trim();
   resultMessageElement.textContent = message;
   resultDetailsElement.textContent = details;
+}
+
+function showAnalysis(data) {
+  tokenCountElement.textContent = `${data.tokens.length} token(s) identificado(s).`;
+  tokenTableBodyElement.replaceChildren();
+  data.tokens.forEach((token) => {
+    const row = document.createElement("tr");
+    [token.tipo, token.lexema, token.linha, token.coluna].forEach((value, index) => {
+      const cell = document.createElement("td");
+      if (index === 1) {
+        const code = document.createElement("code");
+        code.textContent = value;
+        cell.append(code);
+      } else {
+        cell.textContent = value;
+      }
+      row.append(cell);
+    });
+    tokenTableBodyElement.append(row);
+  });
+
+  lexicalErrorsElement.replaceChildren();
+  data.erros.forEach((error) => {
+    const item = document.createElement("li");
+    item.textContent = `Linha ${error.linha}, coluna ${error.coluna}: ${error.mensagem}`;
+    lexicalErrorsElement.append(item);
+  });
 }
 
 exampleSelectElement.addEventListener("change", () => {
@@ -53,8 +83,12 @@ analyzeButtonElement.addEventListener("click", async () => {
       statusElement.textContent = "O backend recusou a entrada.";
       return;
     }
-    showResult(data.mensagem, "success", `${data.linhas} linha(s) e ${data.caracteres} caractere(s) recebidos.`);
-    statusElement.textContent = "Frontend e backend estão conectados.";
+    showAnalysis(data);
+    const resultType = data.sucesso ? "success" : "error";
+    showResult(data.mensagem, resultType, `${data.linhas} linha(s), ${data.caracteres} caractere(s) e ${data.tokens.length} token(s).`);
+    statusElement.textContent = data.sucesso
+      ? "Frontend e backend estão conectados."
+      : "Scanner concluído; corrija os erros léxicos indicados.";
   } catch {
     showResult("Não foi possível comunicar com o servidor. Verifique a conexão e tente novamente.", "error");
     statusElement.textContent = "Falha de comunicação com o backend.";

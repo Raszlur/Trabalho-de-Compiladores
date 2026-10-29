@@ -12,7 +12,14 @@ class FrontendContractTestCase(unittest.TestCase):
         cls.javascript = (ROOT / "frontend" / "src" / "app.js").read_text(encoding="utf-8")
 
     def test_interface_contains_required_controls(self):
-        for element_id in ("source-code", "example-select", "analyze-button", "result"):
+        for element_id in (
+            "source-code",
+            "example-select",
+            "analyze-button",
+            "result",
+            "token-table-body",
+            "lexical-errors",
+        ):
             self.assertIn(f'id="{element_id}"', self.html)
 
     def test_three_examples_are_available(self):
@@ -25,6 +32,7 @@ class FrontendContractTestCase(unittest.TestCase):
         self.assertIn('JSON.stringify({ codigo })', self.javascript)
         self.assertIn("Informe um código-fonte antes", self.javascript)
         self.assertIn("Não foi possível comunicar com o servidor", self.javascript)
+        self.assertIn("showAnalysis", self.javascript)
 
 
 if __name__ == "__main__":

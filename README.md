@@ -2,14 +2,6 @@
 
 Aplicação didática que demonstra análise léxica e sintática de um subconjunto de Python. O scanner e o parser são implementados no backend; o frontend mostra tokens, diagnósticos e a Árvore Sintática Abstrata (AST).
 
-## Escopo da Etapa 4
-
-- **Linguagem de referência:** Python.
-- **Estratégia do parser:** descendente recursivo, implementado manualmente em Python, sem dependências externas.
-- **Construções analisadas:** atribuições simples, literais inteiros/reais/textuais/booleanos/nulos, expressões, operadores aritméticos, comparações, operadores lógicos, parênteses, blocos indentados e condicionais `if`/`else`.
-- **Ainda não implementado:** análise semântica, tabela de símbolos, chamadas/funções, laços, listas, acesso a atributos/índices, `elif` e execução do programa.
-
-O parser reutiliza o scanner da Etapa 3. Ele usa as linhas e colunas já associadas aos tokens para reconhecer limites de instruções e níveis de indentação; o formato e as categorias dos tokens não foram alterados. Consulte a [gramática formal](docs/gramatica.md) para as produções e limitações completas.
 
 ## Estrutura
 
@@ -184,20 +176,4 @@ docker compose down
 
 Configuração do backend: `OLLAMA_BASE_URL` (padrão `http://ollama:11434`) e `OLLAMA_MODEL` (padrão `llama3.2`). Para uma demonstração de API, formato enviado e exemplo de resposta ilustrativa, veja [validação e demonstração](docs/validacao-etapa4.md). A resposta do modelo é apoio didático, não resultado oficial do compilador.
 
-## Testes
 
-Na raiz do projeto:
-
-```bash
-python -m unittest discover -s tests -v
-```
-
-Os testes cobrem scanner/regressão, parser, precedência/associatividade, blocos aninhados, localizações e erros, endpoints e o contrato de interface. A integração Ollama é testada com resposta simulada para não exigir baixar o modelo na suíte automatizada. Consulte [registro de validação](docs/validacao-etapa4.md).
-
-## Próximas etapas
-
-A análise semântica — como resolução de identificadores e compatibilidade de tipos — ainda não foi implementada e é parte da Etapa 5. Decisões do fluxo para o artigo estão em [fluxograma e notas metodológicas](docs/fluxograma.md). A pesquisa bibliográfica e a comparação com ferramentas devem ser concluídas com as fontes acadêmicas efetivamente consultadas; não se afirma novidade ou exclusividade sem evidência.
-
-## Repositório
-
-O projeto está publicado em [Raszlur/Trabalho-de-Compiladores](https://github.com/Raszlur/Trabalho-de-Compiladores). Compartilhe esse endereço com o professor `rocha3runo` conforme as orientações da disciplina.

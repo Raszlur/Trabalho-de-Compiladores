@@ -19,6 +19,15 @@ class FrontendContractTestCase(unittest.TestCase):
             "result",
             "token-table-body",
             "lexical-errors",
+            "syntax-errors",
+            "syntax-status",
+            "ast-tree",
+            "ai-question",
+            "ai-question-button",
+            "ai-response",
+            "expand-ast",
+            "collapse-ast",
+            "download-ast",
         ):
             self.assertIn(f'id="{element_id}"', self.html)
 
@@ -33,6 +42,14 @@ class FrontendContractTestCase(unittest.TestCase):
         self.assertIn("Informe um código-fonte antes", self.javascript)
         self.assertIn("Não foi possível comunicar com o servidor", self.javascript)
         self.assertIn("showAnalysis", self.javascript)
+
+    def test_ast_and_contextual_ai_controls_are_integrated(self):
+        self.assertIn('fetch("/api/ia/explicar"', self.javascript)
+        self.assertIn('tipo: "token"', self.javascript)
+        self.assertIn('tipo: "ast"', self.javascript)
+        self.assertIn("renderAstNode", self.javascript)
+        self.assertIn("setSelectionRange", self.javascript)
+        self.assertIn("Baixar AST em JSON", self.html)
 
 
 if __name__ == "__main__":

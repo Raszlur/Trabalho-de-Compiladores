@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY server.py .
 COPY scanner.py .
+COPY parser.py .
 
 EXPOSE 8000
 

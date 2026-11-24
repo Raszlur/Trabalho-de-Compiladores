@@ -46,6 +46,19 @@
       .token-table th { background: #eef2ff; }
       .token-table code { white-space: pre-wrap; overflow-wrap: anywhere; }
       .errors { margin: 0; padding-left: 1.25rem; color: #991b1b; }
+      .ast-tree, .ast-tree ul { margin: .5rem 0; padding-left: 1.5rem; }
+      .ast-tree { padding-left: 0; list-style: none; }
+      .ast-tree li { margin: .4rem 0; }
+      .ast-tree details { border-left: 2px solid #c7d2fe; padding-left: .75rem; }
+      .ast-tree summary { cursor: pointer; font-weight: 700; }
+      .ast-tree summary:focus-visible, button:focus-visible, textarea:focus-visible, select:focus-visible { outline: 3px solid #818cf8; outline-offset: 2px; }
+      .ast-node-label { color: #312e81; }
+      .ast-node-action, .token-action, .secondary-button { margin: .25rem; padding: .4rem .65rem; font-size: .85rem; }
+      .secondary-button { background: #e0e7ff; color: #312e81; }
+      .ai-panel { margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #dbe1ef; }
+      #ai-question { min-height: 90px; }
+      #ai-response { white-space: pre-wrap; overflow-wrap: anywhere; }
+      .ai-note { color: #526079; font-size: .85rem; }
       @media (max-width: 650px) {
         .controls, .actions { align-items: stretch; flex-direction: column; }
         button { width: 100%; }
@@ -74,7 +87,7 @@
         <label for="source-code">Digite ou cole um programa Python</label>
         <textarea id="source-code" spellcheck="false" placeholder="Exemplo:&#10;numero = 10"></textarea>
         <div class="actions">
-          <span class="hint">O scanner reconhece tokens; a análise sintática será implementada na próxima etapa.</span>
+          <span class="hint">O scanner reconhece tokens e o parser verifica a gramática e constrói a AST.</span>
           <button id="analyze-button" type="button">Enviar para análise</button>
         </div>
         <div class="result" id="result" aria-live="polite">
@@ -87,13 +100,37 @@
           <p class="explanation">Token é a unidade reconhecida pelo scanner; lexema é o texto original que deu origem a ela.</p>
           <div id="token-count" class="hint"></div>
           <table class="token-table">
-            <thead><tr><th>Tipo</th><th>Lexema</th><th>Linha</th><th>Coluna</th></tr></thead>
+            <thead><tr><th>Tipo</th><th>Lexema</th><th>Linha</th><th>Coluna</th><th>Ação didática</th></tr></thead>
             <tbody id="token-table-body"></tbody>
           </table>
         </section>
         <section class="analysis-section" aria-labelledby="errors-title">
           <h3 id="errors-title">Erros léxicos</h3>
           <ul id="lexical-errors" class="errors"></ul>
+        </section>
+        <section class="analysis-section" aria-labelledby="syntax-title">
+          <h3 id="syntax-title">Análise sintática</h3>
+          <p id="syntax-status" class="explanation">A AST e os diagnósticos sintáticos aparecerão aqui após a análise.</p>
+          <ul id="syntax-errors" class="errors"></ul>
+        </section>
+        <section class="analysis-section" aria-labelledby="ast-title">
+          <h3 id="ast-title">Árvore Sintática Abstrata (AST)</h3>
+          <p class="explanation">A AST é uma representação hierárquica simplificada do programa. Selecione um nó para destacar seu trecho e pedir uma explicação.</p>
+          <div class="actions">
+            <button id="expand-ast" class="secondary-button" type="button">Expandir árvore</button>
+            <button id="collapse-ast" class="secondary-button" type="button">Recolher árvore</button>
+            <button id="download-ast" class="secondary-button" type="button" disabled>Baixar AST em JSON</button>
+          </div>
+          <div id="ast-tree" aria-live="polite"></div>
+        </section>
+        <section class="ai-panel" aria-labelledby="ai-title">
+          <h3 id="ai-title">Professor virtual (Ollama + Llama 3.2)</h3>
+          <p class="ai-note">Recurso opcional. A análise do compilador funciona sem IA. As explicações são geradas por IA e podem conter imprecisões; tokens, AST e diagnósticos do compilador são os resultados oficiais.</p>
+          <label for="ai-question">Pergunte sobre a análise</label>
+          <textarea id="ai-question" maxlength="2000" placeholder="Ex.: Qual regra gramatical reconheceu esta expressão?"></textarea>
+          <button id="ai-question-button" type="button">Perguntar ao professor virtual</button>
+          <p id="ai-status" role="status" aria-live="polite"></p>
+          <div id="ai-response" class="result" aria-live="polite"></div>
         </section>
       </section>
     </main>
